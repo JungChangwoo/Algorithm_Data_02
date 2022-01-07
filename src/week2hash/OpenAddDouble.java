@@ -17,7 +17,7 @@ public class OpenAddDouble { // Double Hashing
 		for (int i=0; i<tableSize; i++)
 			table[i]=-1;
 	}
-	
+
 	private int hashFunction(int d) {
 		// 곱하기방법
 		double temp = (double)d * 0.6180339887;
@@ -25,37 +25,29 @@ public class OpenAddDouble { // Double Hashing
 		return (int)(res*tableSize);
 	}
 	// tableSize보다 조금 작은 소수 구하는 함수
-	private int getDecimal(int tableSize) {
-		int [] decimalArray = new int[tableSize];
-		int index = 0;
-		int is = 0;
-		for(int i=2; i<tableSize; i++) {
-			
-			for(int j=2; j<i; j++) {
-				if(i % j == 0 ) {
-					is++;
-				}
-			}
-			if(is == 0) {
-				decimalArray[index] = i;
-				index ++;
+	private int findPrime(int m) {
+		for(int i = m-1; i>(m/2); i--) {
+			if(isPrime(i)) {
+				return i;
 			}
 		}
-		int bigest = 0;
-		for(int i=0; i<decimalArray.length; i++) {
-			if(bigest > decimalArray[i]) {
-				bigest = decimalArray[i];
-			}
+		return 0;
+	}
+	private boolean isPrime(int i) {
+		for(int j=2; j<(i/2); j++) {
+			float x = (float) i/j;
+			int y = i/j;
+			if(x == y) return false;
 		}
-		return bigest;
+		return true;
 	}
 	
 	//Double Hashing
 	private int hashFunction2(int d) {
 		// 곱하기방법2
 		double temp = (double) d * 0.6180339887;
-		double res = temp - Math.floor(temp);
-		return (int) (res * getDecimal(tableSize));
+		double res = temp - Math.floor(temp); 
+		return (int) (res * findPrime(tableSize));
 	}
 
 //	public int hashInsert(int d)
@@ -72,14 +64,16 @@ public class OpenAddDouble { // Double Hashing
 		}
 		else { // collision
 			nOfHops++;
+			int nOfCollisions = 1;
 			int hashCode2 = hashFunction2(d);
-			int probeIndex = (hashCode + hashCode2) % tableSize;
+			int probeIndex = (hashCode + nOfCollisions*hashCode2) % tableSize;
 			while(table[probeIndex] != -1 && table[probeIndex] != -999) {
 				nOfHops++;
-				probeIndex = (probeIndex + hashCode2) % tableSize;
-				if(probeIndex == hashCode) {
-					return 0; // not Happen
-				}
+				nOfCollisions++;
+				probeIndex = (hashCode + nOfCollisions*hashCode2) % tableSize;
+//				if(probeIndex == hashCode) {
+//					return 0; // not Happen
+//				}
 			}
 			table[probeIndex] = d;
 			numberOfItems++;
@@ -98,14 +92,16 @@ public class OpenAddDouble { // Double Hashing
 		}
 		else { // collision
 			nOfHops++;
+			int nOfCollisions = 1;
 			int hashCode2 = hashFunction2(d);
-			int probeIndex = (hashCode + hashCode2) % tableSize;
+			int probeIndex = (hashCode + nOfCollisions*hashCode2)  % tableSize;
 			while(table[probeIndex] != -1 && table[probeIndex] != d) {
 				nOfHops++;
-				probeIndex = (probeIndex + hashCode2) % tableSize;
-				if(probeIndex == hashCode) {
-					return 0; // not Happen
-				}
+				nOfCollisions++;
+				probeIndex = (hashCode + nOfCollisions*hashCode2)  % tableSize;
+//				if(probeIndex == hashCode) {
+//					return 0; // not Happen
+//				}
 			}
 			// 못 찾은 경우와 찾은 경우가 있음
 			if(table[probeIndex] == d) {

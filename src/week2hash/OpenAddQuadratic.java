@@ -41,14 +41,14 @@ public class OpenAddQuadratic { // Quadratic Probing
 			nOfHops++;
 			// Quadratic을 구현하기 위한 mul 변수
 			int mul = 1;
-			int probeIndex = (hashCode + mul) % tableSize;
+			int probeIndex = (hashCode + mul*mul) % tableSize;
 			while(table[probeIndex] != -1 && table[probeIndex] != -999) {
 				nOfHops++;
 				mul++;
-				probeIndex = (probeIndex + (int)Math.pow(mul, 2)) % tableSize;
-				if(probeIndex == hashCode) {
-					return 0; // not Happen
-				}
+				probeIndex = (hashCode + (int)Math.pow(mul, 2)) % tableSize;
+//				if(probeIndex == hashCode) {
+//					return 0; // not Happen
+//				}
 			}
 			table[probeIndex] = d;
 			numberOfItems++;
@@ -68,14 +68,14 @@ public class OpenAddQuadratic { // Quadratic Probing
 		else { // collision
 			nOfHops++;
 			int mul = 1;
-			int probeIndex = (hashCode + mul) % tableSize;
+			int probeIndex = (hashCode + mul*mul) % tableSize;
 			while(table[probeIndex] != -1 && table[probeIndex] != d) {
 				nOfHops++;
 				mul++;
-				probeIndex = (probeIndex + (int)Math.pow(mul, 2)) % tableSize;
-				if(probeIndex == hashCode) {
-					return 0; // not Happen
-				}
+				probeIndex = (hashCode + (int)Math.pow(mul, 2)) % tableSize;
+//				if(probeIndex == hashCode) {
+//					return 0; // not Happen
+//				}
 			}
 			// 못 찾은 경우와 찾은 경우가 있음
 			if(table[probeIndex] == d) {

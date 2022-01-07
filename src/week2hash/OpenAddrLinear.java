@@ -42,8 +42,8 @@ public class OpenAddrLinear { // Linear Probing
 			while(table[probeIndex] != -1 && table[probeIndex] != -999) {
 				nOfHops++;
 				probeIndex = (probeIndex + 1) % tableSize;
-				if(probeIndex == hashCode) {
-					return 0; // not Happen
+				if(probeIndex == hashCode) { // 한 바퀴를 돌음 
+					return 0; // not Happen (우리는 enlarge를 하기 때문에 일어날 일은 없을 거임)
 				}
 			}
 			table[probeIndex] = d;

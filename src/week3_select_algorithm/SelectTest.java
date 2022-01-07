@@ -72,7 +72,7 @@ public class SelectTest {
 		if(p == r) {
 			return data[p];
 		}
-		int q = linearPartition(data, p, r);
+		int q = linearPartition(data, p, r); // 전체 중앙값을 기준으로 왼쪽 오른쪽으로 나눔 
 		int k = q-p;
 		if (i < k) {
 			return linearSelect(data, p, q-1, i);
@@ -87,16 +87,16 @@ public class SelectTest {
 	
 	private int linearPartition(int[] data, int p, int r) {
 		
-		int pValue = median(data, p, r);
+		int pValue = median(data, p, r); //전체 중앙값 
 		int index = 0;
-		for(int i=p; i<=r; i++) {
+		for(int i=p; i<=r; i++) { // 처음부터 끝까지 돌면서 전체 중앙값이 있는 자리를 찾음
 			if(data[i] == pValue) {
 				index = i;
 				break;
 			}
 		}
 		
-		swapData(data, r, index);
+		swapData(data, r, index); //전체 중앙값 자리에 있는 값과 맨 뒤 자리에 있는 값을 바꿈 이거를 기준으로 삼기 위해서 
 		int pivot = r;
 		
 		int left = p;
@@ -117,18 +117,18 @@ public class SelectTest {
 
 	private int median(int[] data, int p, int r) {
 		if( (r-p+1) <= 5) {
-			return median5(data, p, r);
+			return median5(data, p, r); //5개 이하면, 바로 중앙값을 return
 		}
 		float f = r-p+1;
-		int arrSize = (int) Math.ceil(f/5);
+		int arrSize = (int) Math.ceil(f/5); // 전체길이를 원소 5개씩 나눔
 		int [] medianArr = new int[arrSize];
-		for(int i=0; i<arrSize; i++) {
+		for(int i=0; i<arrSize; i++) { // 원소 5개의 중앙값들이 array에 들어감
 			medianArr[i] = median5(data, p+5*i, (int)Math.min(p+5*i+4, r));
 		}
-		return median(medianArr, 0, arrSize-1);
+		return median(medianArr, 0, arrSize-1); // 중앙값들끼리 재귀적으로 반복 
 	
 	}
-
+	// 정렬해서 그 중에 중앙 인덱스의 값을 반환함
 	private int median5(int[] data, int p, int r) {
 		if(p == r) return data[p];
 		sort5(data, p, r);

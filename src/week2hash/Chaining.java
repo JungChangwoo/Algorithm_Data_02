@@ -35,8 +35,8 @@ public class Chaining {
 	public int hashInsert(int d) {
 		int hashCode = hashFunction(d);
 		HashNode newNode = new HashNode(d);
-		newNode.next = table[hashCode];
-		table[hashCode] = newNode;
+		newNode.next = table[hashCode]; // 원래 있던 Node가 next
+		table[hashCode] = newNode;		// 맨 앞에 집어넣음
 		numberOfItems ++;
 		nOfHops = 1; // 맨 앞에 넣는다고 하면, 항상 횟수는 1이니까.
 		return nOfHops;
@@ -68,19 +68,19 @@ public class Chaining {
 		// 링크를 따라갈 Pointer가 필요함
 		HashNode p = table[hashCode];
 		nOfHops = 1;
-		
+		//그런 값이 없다... 
 		if(p == null) {
 			return -nOfHops;
-		}
+		} //맨 앞에 있는 값이더라... 
 		else if (p.key == d){
-			table[hashCode] = p.next;
+			table[hashCode] = p.next; // 뒤에 거를 앞에 놓음
 			numberOfItems--;
 			return nOfHops;
 		}
-		
+		// 두 개를 만들어야 앞 뒤를 연결할 수 있음
 		HashNode q = p.next;
 		nOfHops++;
-		
+		// 맨 앞이 아닐 경우 null이 나올 때까지 반복
 		while(q != null) {
 			if(q.key == d) {
 				p.next = q.next;
